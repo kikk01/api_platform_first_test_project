@@ -28,7 +28,7 @@ class Review
     private \DateTimeImmutable $publicationDate;
 
     #[ORM\OneToOne(inversedBy: 'review', targetEntity: book::class, cascade: ['persist', 'remove'])]
-    private $book;
+    private Book $book;
 
     public function getId(): ?int
     {
