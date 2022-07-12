@@ -31,6 +31,9 @@ class Book
     #[ORM\Column(type: 'array')]
     private iterable $reviews = [];
 
+    #[ORM\OneToOne(mappedBy: 'book', targetEntity: Review::class, cascade: ['persist', 'remove'])]
+    private $review;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
@@ -97,6 +100,28 @@ class Book
     public function setReviews(array $reviews): self
     {
         $this->reviews = $reviews;
+
+        return $this;
+    }
+
+    public function getReview(): ?Review
+    {
+        return $this->review;
+    }
+
+    public function setReview(?Review $review): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($review === null && $this->review !== null) {
+            $this->review->setBook(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($review !== null && $review->getBook() !== $this) {
+            $review->setBook($this);
+        }
+
+        $this->review = $review;
 
         return $this;
     }
