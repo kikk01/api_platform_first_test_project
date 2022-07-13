@@ -32,7 +32,7 @@ class Book
     private iterable $reviews = [];
 
     #[ORM\OneToOne(mappedBy: 'book', targetEntity: Review::class, cascade: ['persist', 'remove'])]
-    private $review;
+    private Book $review;
 
     public function __construct()
     {
